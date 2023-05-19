@@ -23,8 +23,9 @@ class ApplicantAdmin(admin.ModelAdmin):
         ('phone', 'email',),
         'address',
         ('qualification_upto', 'qualification_for'),
-        'country_for',
+        'country_for', 'counsellor',
     )
+    list_display = ['name', 'phone', 'address', 'qualification_upto', 'country_for']
     inlines = [
         QualificationInlineAdmin,
         QueryInlineAdmin,

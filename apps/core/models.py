@@ -6,17 +6,17 @@ from django import forms
 User = get_user_model()
 
 COUNTRY = (
-    (1, 'USA'),
-    (2, 'AUSTRAILIA'),
-    (3, 'UNITED KINGDOM'),
-    (4, 'CANADA'),
-    (5, 'EUROPE'),
-    (6, 'NEW ZEALAND'),
-    (7, 'DUBAI'),
-    (8, 'JAPAN'),
-    (9, 'KOREA'),
-    (10, 'INDIA'),
-    (11, 'BANGLADESH'),
+    ('USA', 'USA'),
+    ('AUS', 'AUSTRAILIA'),
+    ('UK', 'UNITED KINGDOM'),
+    ('CAD', 'CANADA'),
+    ('EU', 'EUROPE'),
+    ('NZD', 'NEW ZEALAND'),
+    ('DUB', 'DUBAI'),
+    ('JPN', 'JAPAN'),
+    ('KOR', 'KOREA'),
+    ('IND', 'INDIA'),
+    ('BNG', 'BANGLADESH'),
 )
 
 QUALIFICATION = (
@@ -60,7 +60,7 @@ class Applicant(models.Model):
     country_for = ModifiedArrayField(
         models.CharField(
             choices=COUNTRY,
-            max_length=100,
+            max_length=255,
             blank=True,
             null=True
         ),
@@ -68,7 +68,7 @@ class Applicant(models.Model):
         null=True
     )
 
-    counsellor = models.ForeignKey(User, on_delete=models.CASCADE)
+    counsellor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -86,10 +86,11 @@ class SocialMedia(models.Model):
 class Qualification(models.Model):
     applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
     level = models.IntegerField(choices=QUALIFICATION, null=True, blank=True)
+    year = models.CharField(max_length=4, null=True, blank=True)
     grade = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.applicant
+        return self.applicant.name
     
 class Query(models.Model):
     applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
@@ -97,4 +98,4 @@ class Query(models.Model):
     answer = models.TextField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return self.applicant
+        return self.applicant.name
